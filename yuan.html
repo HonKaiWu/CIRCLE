@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #cas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<canvas width="800" height="600" id="cas"></canvas>
+<script>
+    var cas = document.querySelector("#cas");
+    var ctx = cas.getContext("2d");
+
+
+    function angleToRadian(angle) {
+        return angle * Math.PI / 180;
+    }
+
+    function getRandomColor() {
+        return "rgb("+ parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";
+    }
+
+    var data = [
+
+        {
+            title:"1",
+            count:100
+        },
+        {
+            title:"2",
+            count:10
+        },
+        {
+            title:"3",
+            count:80
+        },
+        {
+            title:"4",
+            count:200
+        },
+        {
+            title:"5",
+            count:50
+        },
+        {
+            title:"6",
+            count:60
+        },
+        {
+            title:"7",
+            count:150
+        },
+        {
+            title:"8",
+            count:60
+        },
+
+    ];
+
+    //1.求所有数据的总和，count综合
+    var sum = 0;
+    data.forEach(function (v) {
+        sum += v.count;
+    });
+    console.log(sum);
+
+    //2. 使用 每个数据/总和 求出比例 并且使用比例算出扇形的角度
+    var angleArr = data.map(function (v, i, a) {
+        var rate = v.count /sum;
+        var angle = 360 * rate;
+        return angle;
+    });
+
+    //3.遍历这个存有角度的数组，把每个角度对应的扇形绘制出来
+    var x = cas.width /2;
+    var y = cas.height /2;
+    var r = 200;
+    var startAngle = -90;
+
+    angleArr.forEach(function (v,i,a) {
+        ctx.beginPath();
+        ctx.fillStyle = getRandomColor();
+
+        ctx.moveTo(x,y);
+        ctx.arc(x,y,r,angleToRadian(startAngle),angleToRadian(startAngle+v));
+        ctx.closePath();
+        ctx.fill();
+
+        startAngle += v;
+    });
+
+
+
+</script>
+</body>
+</html>
